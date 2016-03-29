@@ -31,7 +31,7 @@ function createWordCountInfo (text) {
 		`(Words: ${words}, Characters: ${characters})`
 	);
 	const element = document.createElement('span');
-	const CSS = `color:rgba(0,0,0,0.5); display:inline-block;`;
+	const CSS = `color:rgba(0,0,0,0.5);`;
 
 	element.appendChild(textNode);
 	element.style.cssText = CSS;
