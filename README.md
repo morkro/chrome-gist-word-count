@@ -6,4 +6,4 @@ Supported languages:
 - Markdown
 - Text
 
-Excludes Markdown code blocks which begin and end with ` ``` `.
+Excludes Markdown code blocks which begin and end with three backtick characters.
