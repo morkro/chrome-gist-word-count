@@ -1,3 +1,4 @@
+const regex = { cleanWhitespace: /\s+/gi, removeCode: /```(.*?)```/gm };
 const supportedLanguages = ['Markdown', 'Text'];
 
 function getGistHashFromUrl () {
@@ -10,18 +11,21 @@ function getGistHashFromUrl () {
 }
 
 function getWordCount (text, type) {
+	text = text.trim();
+
 	if (type === 'words') {
-		return text.trim()
-			.replace(/\s+/gi, ' ')
-			.replace(/```(.*?)```/gm, '')
+		return text
+			.replace(regex.cleanWhitespace, ' ')
+			.replace(regex.removeCode, '')
 			.split(' ').length;
 	}
 	else if (type === 'characters') {
-		return text.trim().replace(/\s+/gi, '').length;
+		return text
+			.replace(regex.cleanWhitespace, '')
+			.replace(regex.removeCode, '')
+			.length;
 	}
-	else {
-		return text.trim().length;
-	}
+	else return text.length;
 }
 
 function createWordCountInfo (text) {
@@ -31,10 +35,9 @@ function createWordCountInfo (text) {
 		`(Words: ${words}, Characters: ${characters})`
 	);
 	const element = document.createElement('span');
-	const CSS = `color:rgba(0,0,0,0.5);`;
 
 	element.appendChild(textNode);
-	element.style.cssText = CSS;
+	element.style.cssText = 'color:rgba(0,0,0,0.5)';
 
 	return element;
 }
