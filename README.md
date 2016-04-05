@@ -1,6 +1,6 @@
 # Gist Word Count
 
-Adds a word count to your files on GitHub Gist.
+Adds a word and character count to your files on GitHub Gist.
 
 ![Screenshot of word count](screenshot.png)
 
