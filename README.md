@@ -5,7 +5,7 @@ Adds a word and character count to your files on GitHub Gist.
 ![Screenshot of word count](screenshot.png)
 
 ## Install
-Install the extension via Chrome Web Store, or [download](https://github.com/morkro/chrome-gist-word-count/archive/master.zip) this repository and add it as unpacked Chrome extension.
+Install the extension via [Chrome Web Store](https://chrome.google.com/webstore/detail/github-gist-word-count/managfckpmboeeanfmcmjbndadfpidjf), or [download](https://github.com/morkro/chrome-gist-word-count/archive/master.zip) this repository and add it as unpacked Chrome extension.
 
 ### Supported languages:
 - Markdown

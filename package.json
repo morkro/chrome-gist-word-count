@@ -1,6 +1,6 @@
 {
    "name": "GitHub Gist Word Count",
-   "version": "1.0.0",
+   "version": "1.0.1",
    "description": "Adds a word count to your files on GitHub Gist",
    "author": "Moritz Kröger <write@morkro.de> (http://morkro.de)",
    "homepage": "https://github.com/morkro/chrome-gist-word-count",
