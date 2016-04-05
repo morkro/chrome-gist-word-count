@@ -3,7 +3,7 @@
 	"name": "Gist Word Count",
 	"description": "Adds a word count to your files on GitHub Gist.",
 	"version": "1.0.0",
-	"author": "Moritz Kröger <@morkro>",
+	"homepage_url": "https://github.com/morkro/chrome-gist-word-count",
 	"permissions": [
 		"*://gist.github.com/*",
 		"activeTab"
