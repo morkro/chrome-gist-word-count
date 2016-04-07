@@ -44,28 +44,25 @@ function requestGitHubAPI () {
 	);
 }
 
-function getWordCount (text, type) {
+function getStringCount (type, text) {
 	text = text.trim();
 	const { clearWhitespace, removeMarkdownCode } = REGEX;
 
-	if (type === 'words') {
-		return text
-			.replace(clearWhitespace, ' ')
-			.replace(removeMarkdownCode, '')
-			.split(' ').length;
+	if (type === 'words' || type === 'characters') {
+		text = text.replace(clearWhitespace, ' ')
+					.replace(removeMarkdownCode, '');
+
+		if (type === 'words') {
+			text = text.split(' ');
+		}
 	}
-	else if (type === 'characters') {
-		return text
-			.replace(clearWhitespace, '')
-			.replace(removeMarkdownCode, '')
-			.length;
-	}
-	else return text.length;
+
+	return text.length;
 }
 
 function createWordCountElement (text) {
-	const words = getWordCount(text, 'words');
-	const characters = getWordCount(text, 'characters');
+	const words = getStringCount('words', text);
+	const characters = getStringCount('characters', text);
 	const textNode = document.createTextNode(
 		`(Words: ${words}, Characters: ${characters})`
 	);
