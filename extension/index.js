@@ -1,122 +1,96 @@
-'use strict';
+'use strict'
 
-/*
- * =========================================================================== *
- * CONFIGURATION
- * =========================================================================== *
- */
-const SUPPORTED = [
-	'Markdown',
-	'Text'
-];
-const REGEX = {
-	clearWhitespace: /\s+/gi,
-	removeMarkdownCode: /```(.*?)```/gm
-};
-
-/*
- * =========================================================================== *
- * ALL THE FUNCTIONALITY
- * =========================================================================== *
- */
-function isGistOverviewPage () {
-	return document.querySelectorAll('.file-box .file-header').length > 0;
+const config = {
+	api: 'https://api.github.com/gists',
+	supported: ['Markdown', 'Text'],
 }
 
-function getGistIDFromUrl () {
-	const path = window.location.pathname.split('/');
-	return path[path.length - 1];
+function isGistOverviewPage() {
+	return document.querySelectorAll('.file-box .file-header').length > 0
 }
 
-function requestGitHubAPI () {
-	const previous = JSON.parse(localStorage.getItem('gist-ext-last-storage'));
-	const config = { method: 'GET' };
-
-	if (previous && previous.id === getGistIDFromUrl()) {
-		config.headers = new Headers({
-			'If-Modified-Since': localStorage.getItem('gist-ext-last-modified')
-		});
-	}
-
-	return new Request(
-		`https://api.github.com/gists/${getGistIDFromUrl()}`,
-		config
-	);
-}
-
-function getStringCount (type, text) {
-	text = text.trim();
-	const { clearWhitespace, removeMarkdownCode } = REGEX;
+function getStringCount(type, text) {
+	text = text.trim()
+	const clearWhitespace = /\s+/gi
+	const removeMarkdownCode = /```(.*?)```/gm
 
 	if (type === 'words' || type === 'characters') {
-		text = text.replace(clearWhitespace, ' ')
-					.replace(removeMarkdownCode, '');
+		text = text.replace(clearWhitespace, ' ').replace(removeMarkdownCode, '')
 
 		if (type === 'words') {
-			text = text.split(' ');
+			text = text.split(' ')
 		}
 	}
 
-	return text.length;
+	return text.length
 }
 
-function createWordCountElement (text) {
-	const words = getStringCount('words', text);
-	const characters = getStringCount('characters', text);
+function createWordCountElement(text) {
+	const words = getStringCount('words', text)
+	const characters = getStringCount('characters', text)
 	const textNode = document.createTextNode(
 		`(Words: ${words}, Characters: ${characters})`
-	);
-	const element = document.createElement('span');
+	)
+	const element = document.createElement('span')
 
-	element.appendChild(textNode);
-	element.style.cssText = 'color:rgba(0,0,0,0.5)';
+	element.appendChild(textNode)
+	element.style.cssText = 'color:rgba(0,0,0,0.5)'
 
-	return element;
+	return element
 }
 
-function addWordCountInfo (file, index) {
-	const wordCountElement = createWordCountElement(file.content);
+function addWordCountInfo(file, index) {
+	const wordCountElement = createWordCountElement(file.content)
 	const gistContent = document.querySelector(
-		`.gist-content .file-box:nth-of-type(${++index + 1})`
-	);
-	const gistElement = gistContent.querySelector('.file-info');
+		`.gist-content .file-box:nth-of-type(${index})`
+	)
 
-	gistElement.appendChild(wordCountElement);
+	gistContent?.querySelector('.file-info').appendChild(wordCountElement)
 }
-
-function scanFiles (files) {
-	Object.keys(files).forEach((key, index) => {
-		const file = files[key];
-		if (SUPPORTED.includes(file.language)) {
-			addWordCountInfo(file, index);
-		}
-	});
-}
-
 /*
  * =========================================================================== *
  * INITIALISE EXTENSION
  * =========================================================================== *
  */
-if (isGistOverviewPage()) {
-	const previous = JSON.parse(localStorage.getItem('gist-ext-last-storage'));
+;(async () => {
+	if (!isGistOverviewPage()) return
 
-	fetch(requestGitHubAPI())
-		.then(response => {
-			if (response.status !== 404) {
-				localStorage.setItem(
-					'gist-ext-last-modified',
-					response.headers.get('Last-Modified')
-				);
+	const path = window.location.pathname.split('/')
+	const gist = path[path.length - 1]
+	const previous = JSON.parse(localStorage.getItem('gist-ext-last-storage'))
 
-				return (response.status === 200) ? response.json() : previous;
+	try {
+		const response = await fetch(`${config.api}/${gist}`, {
+			headers:
+				previous?.id === gist
+					? new Headers({
+							'If-Modified-Since': localStorage.getItem(
+								'gist-ext-last-modified'
+							),
+					  })
+					: {},
+		})
+
+		if (response.status !== 404) {
+			localStorage.setItem(
+				'gist-ext-last-modified',
+				response.headers.get('Last-Modified')
+			)
+		}
+
+		const json = response.status === 200 ? await response.json() : previous
+		if (!json) return
+
+		localStorage.setItem('gist-ext-last-storage', JSON.stringify(json))
+
+		Object.keys(json.files).forEach((key, index) => {
+			const file = json.files[key]
+			if (config.supported.includes(file.language)) {
+				addWordCountInfo(file, index + 1)
 			}
 		})
-		.then(json => {
-			if (json) {
-				localStorage.setItem('gist-ext-last-storage', JSON.stringify(json));
-				return scanFiles(json.files);
-			}
-		})
-		.catch(error => console.warn(error));
-}
+	} catch (error) {
+		console.log('Gist Count: Error occured while reading files!')
+		console.error(error)
+	}
+})()

@@ -2,12 +2,9 @@
 	"manifest_version": 2,
 	"name": "GitHub Gist Word Count",
 	"description": "Adds a word count to your files on GitHub Gist.",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"homepage_url": "https://github.com/morkro/chrome-gist-word-count",
-	"permissions": [
-		"*://gist.github.com/*",
-		"activeTab"
-	],
+	"permissions": ["*://gist.github.com/*", "activeTab"],
 	"web_accessible_resources": ["index.js"],
 	"icons": {
 		"16": "icon16.png",
@@ -21,5 +18,5 @@
 			"js": ["index.js"]
 		}
 	],
-	"minimum_chrome_version": "47"
+	"minimum_chrome_version": "80"
 }

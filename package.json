@@ -1,15 +1,15 @@
 {
-   "name": "GitHub Gist Word Count",
-   "version": "1.0.1",
-   "description": "Adds a word count to your files on GitHub Gist",
-   "author": "Moritz Kröger <write@morkro.de> (http://morkro.de)",
-   "homepage": "https://github.com/morkro/chrome-gist-word-count",
-   "license": "MIT",
-   "repository": {
-      "type": "git",
-      "url": "https://github.com/morkro/chrome-gist-word-count"
-   },
-   "bugs": {
-      "url": "https://github.com/morkro/chrome-gist-word-count/issues"
-   }
+	"name": "chrome-gist-word-count",
+	"version": "1.0.2",
+	"description": "Adds a word count to your files on GitHub Gist",
+	"author": "Moritz Kröger <write@morkro.de> (http://morkro.de)",
+	"homepage": "https://github.com/morkro/chrome-gist-word-count",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/morkro/chrome-gist-word-count"
+	},
+	"bugs": {
+		"url": "https://github.com/morkro/chrome-gist-word-count/issues"
+	}
 }
